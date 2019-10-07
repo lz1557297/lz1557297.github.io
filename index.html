@@ -146,6 +146,130 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-实现线程的三种方式（学习笔记）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/10/07/实现线程的三种方式（学习笔记）/">实现线程的三种方式（学习笔记）</a>
+    </h1>
+  
+
+        
+        <a href="/2019/10/07/实现线程的三种方式（学习笔记）/" class="archive-article-date">
+  	<time datetime="2019-10-07T12:01:17.601Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-07</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="线程的实现"><a href="#线程的实现" class="headerlink" title="线程的实现"></a>线程的实现</h2><h4 id="1-继承Thread类"><a href="#1-继承Thread类" class="headerlink" title="1. 继承Thread类"></a>1. 继承Thread类</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.oracle.线程;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">th_1</span> <span class="keyword">extends</span> <span class="title">Thread</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>)</span><br><span class="line">        System.out.println(Thread.currentThread().getName()+<span class="string">"线程运行"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        th_1 t1 = <span class="keyword">new</span> th_1();</span><br><span class="line">        th_1 t2 = <span class="keyword">new</span> th_1();</span><br><span class="line">        t1.start();</span><br><span class="line">        t2.start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>th_1类继承Thread类，并重写run()，然后在main()里创建th_1对象，调用父类Thread的start()方法，继而创建新线程，执行run()。值得注意的一点是，Thread类是实现了Runnable接口的。如下是Thread类中实现接口后重写的run()方法。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Thread</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (target != <span class="keyword">null</span>) &#123;</span><br><span class="line">            target.run();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-实现Runnable接口"><a href="#2-实现Runnable接口" class="headerlink" title="2. 实现Runnable接口"></a>2. 实现Runnable接口</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.oracle.线程;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">th_2</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>)</span><br><span class="line">        System.out.println(Thread.currentThread().getName()+<span class="string">"线程运行"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        th_2 tt1 = <span class="keyword">new</span> th_2();</span><br><span class="line">        th_2 tt2 = <span class="keyword">new</span> th_2();</span><br><span class="line">        Thread thread_1 = <span class="keyword">new</span> Thread(tt1);</span><br><span class="line">        Thread thread_2 = <span class="keyword">new</span> Thread(tt2);</span><br><span class="line">        thread_1.start();</span><br><span class="line">        thread_2.start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>th_2实现Runnable接口，重写run()方法，在main()里创建th_2对象，并实例化Thread对象，调用其一个有参的构造函数，将自己的th_2实例作为参数传入。再由Thread的实例对象调用start()方法，启动线程。与第一种方式的区别在于，Thread类中有一个私有属性target,继承该类后run()中的target即为自有的target，而第二种方法则是自定义target。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* What will be run. */</span></span><br><span class="line">    <span class="keyword">private</span> Runnable target;  <span class="comment">//Thread中的私有属性</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">Thread</span><span class="params">(Runnable target)</span> </span>&#123;</span><br><span class="line">        init(<span class="keyword">null</span>, target, <span class="string">"Thread-"</span> + nextThreadNum(), <span class="number">0</span>);</span><br><span class="line">    &#125;  <span class="comment">//有参构造方法</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (target != <span class="keyword">null</span>) &#123;</span><br><span class="line">            target.run();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;  <span class="comment">//Thread中的run()方法，传入的target（th_2实例）调用run()。</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="通过Callable和Future创建线程"><a href="#通过Callable和Future创建线程" class="headerlink" title="通过Callable和Future创建线程"></a>通过Callable和Future创建线程</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.oracle.线程;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.Callable;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.ExecutionException;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.FutureTask;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">th_3</span> <span class="keyword">implements</span> <span class="title">Callable</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= <span class="number">20</span>; i++) &#123;</span><br><span class="line">            sum+=i;</span><br><span class="line">            Thread.sleep(<span class="number">100</span>);</span><br><span class="line">            System.out.println(i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> sum;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ExecutionException, InterruptedException </span>&#123;</span><br><span class="line">        th_3 tt1 = <span class="keyword">new</span> th_3();  </span><br><span class="line">        <span class="comment">//创建th_3对象</span></span><br><span class="line">        FutureTask oneTask = <span class="keyword">new</span> FutureTask(tt1);</span><br><span class="line">        <span class="comment">//实例化FutureTask对象，tt1作为参数</span></span><br><span class="line">        Thread t1 = <span class="keyword">new</span> Thread(oneTask);</span><br><span class="line">        <span class="comment">//创建Thread对象，oneTask作为参数</span></span><br><span class="line">        t1.start();</span><br><span class="line">        <span class="comment">//启动线程</span></span><br><span class="line">        System.out.println(oneTask.get());</span><br><span class="line">        <span class="comment">//取得call()的返回值</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>FutureTask实现了RunnableFuture接口，而该接口继承了Runnable和Future类。</p>
+</blockquote>
+<h3 id="线程的生命周期"><a href="#线程的生命周期" class="headerlink" title="线程的生命周期"></a>线程的生命周期</h3><ol>
+<li>线程创建（new）<blockquote>
+<p>线程被创建，JVM为其分配内存，初始化成员变量</p>
+</blockquote>
+</li>
+<li>线程就绪（runnable）<blockquote>
+<p>线程对象调用start()方法后，线程处于就绪状态，JVM为其创建方法栈和程序计数器。线程此时处于线程就绪队列，等待系统分配CPU时间片。需要注意的是，用start()启动线程，系统会将run()当作线程执行体，若单独调用run(),线程对象则会被当作普通对象来处理，且不能再调用start()方法来启动线程。</p>
+</blockquote>
+</li>
+<li>线程执行（running）<blockquote>
+<p>线程得到系统分配的CPU时间片，开始运行，具体调度取决与系统自身。</p>
+</blockquote>
+</li>
+<li>线程阻塞（wait/sleep）<blockquote>
+<p>线程调用sleep()方法，进入阻塞状态，放弃占用的系统资源，但不会释放所持有的对象锁。</p>
+</blockquote>
+</li>
+</ol>
+<blockquote>
+<p>线程调用阻塞式IO方法，在得到方法返回值之前线程处于阻塞状态，例如scanner。</p>
+</blockquote>
+<blockquote>
+<p>线程调用suspend()方法，挂起线程，但是这个方法有可能导致死锁，为过时方法，应避免使用。</p>
+</blockquote>
+<blockquote>
+<p>线程调用wait()方法，会释放对象锁，等待被notify()/notifyAll()唤醒。</p>
+</blockquote>
+<blockquote>
+<p>yield()方法可以让线程直接进入就绪状态，而非像sleep()方法，在睡眠指定时长后才进入就绪。</p>
+</blockquote>
+<blockquote>
+<p>join()方法可以合并多个线程，前一个线程执行结束后，下一个线程继续执行。</p>
+</blockquote>
+<blockquote>
+<p>setPriority(int newPriority)方法可以设置线程执行优先级，但不一定有用。<br>5. 线程死亡（dead）<br>线程执行完毕，线程死亡。</p>
+</blockquote>
+<h4 id="引用材料"><a href="#引用材料" class="headerlink" title="引用材料"></a>引用材料</h4><blockquote>
+<p><a href="https://juejin.im/post/5a72d4bd518825735300f37b" target="_blank" rel="noopener">https://juejin.im/post/5a72d4bd518825735300f37b</a>  （啃碎并发（二）：Java线程的生命周期–猿码道）</p>
+</blockquote>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/10/07/实现线程的三种方式（学习笔记）/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-JDBC流程" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
