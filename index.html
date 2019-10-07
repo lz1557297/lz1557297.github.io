@@ -189,24 +189,18 @@
 <blockquote>
 <p>FutureTask实现了RunnableFuture接口，而该接口继承了Runnable和Future类。</p>
 </blockquote>
-<h3 id="线程的生命周期"><a href="#线程的生命周期" class="headerlink" title="线程的生命周期"></a>线程的生命周期</h3><ol>
-<li>线程创建（new）<blockquote>
+<h3 id="线程的生命周期"><a href="#线程的生命周期" class="headerlink" title="线程的生命周期"></a>线程的生命周期</h3><h4 id="线程创建（new）"><a href="#线程创建（new）" class="headerlink" title="线程创建（new）"></a>线程创建（new）</h4><blockquote>
 <p>线程被创建，JVM为其分配内存，初始化成员变量</p>
 </blockquote>
-</li>
-<li>线程就绪（runnable）<blockquote>
+<h4 id="线程就绪（runnable）"><a href="#线程就绪（runnable）" class="headerlink" title="线程就绪（runnable）"></a>线程就绪（runnable）</h4><blockquote>
 <p>线程对象调用start()方法后，线程处于就绪状态，JVM为其创建方法栈和程序计数器。线程此时处于线程就绪队列，等待系统分配CPU时间片。需要注意的是，用start()启动线程，系统会将run()当作线程执行体，若单独调用run(),线程对象则会被当作普通对象来处理，且不能再调用start()方法来启动线程。</p>
 </blockquote>
-</li>
-<li>线程执行（running）<blockquote>
+<h4 id="线程执行（running）"><a href="#线程执行（running）" class="headerlink" title="线程执行（running）"></a>线程执行（running）</h4><blockquote>
 <p>线程得到系统分配的CPU时间片，开始运行，具体调度取决与系统自身。</p>
 </blockquote>
-</li>
-<li>线程阻塞（wait/sleep）<blockquote>
+<h4 id="线程阻塞（wait-sleep）"><a href="#线程阻塞（wait-sleep）" class="headerlink" title="线程阻塞（wait/sleep）"></a>线程阻塞（wait/sleep）</h4><blockquote>
 <p>线程调用sleep()方法，进入阻塞状态，放弃占用的系统资源，但不会释放所持有的对象锁。</p>
 </blockquote>
-</li>
-</ol>
 <blockquote>
 <p>线程调用阻塞式IO方法，在得到方法返回值之前线程处于阻塞状态，例如scanner。</p>
 </blockquote>
@@ -223,7 +217,10 @@
 <p>join()方法可以合并多个线程，前一个线程执行结束后，下一个线程继续执行。</p>
 </blockquote>
 <blockquote>
-<p>setPriority(int newPriority)方法可以设置线程执行优先级，但不一定有用。<br>5. 线程死亡（dead）<br>线程执行完毕，线程死亡。</p>
+<p>setPriority(int newPriority)方法可以设置线程执行优先级，但不一定有用。</p>
+</blockquote>
+<h4 id="线程死亡（dead）"><a href="#线程死亡（dead）" class="headerlink" title="线程死亡（dead）"></a>线程死亡（dead）</h4><blockquote>
+<p>线程执行完毕，线程死亡。</p>
 </blockquote>
 <h4 id="引用材料"><a href="#引用材料" class="headerlink" title="引用材料"></a>引用材料</h4><blockquote>
 <p><a href="https://juejin.im/post/5a72d4bd518825735300f37b" target="_blank" rel="noopener">https://juejin.im/post/5a72d4bd518825735300f37b</a>  （啃碎并发（二）：Java线程的生命周期–猿码道）</p>
